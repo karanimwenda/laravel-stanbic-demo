@@ -61,7 +61,7 @@ class DemoSinglePaymentCommand extends Command
         // 2. Create transaction info
         $transactionInfo = CreditTransferTransactionInfo::make()
             ->setPaymentId($paymentId, $instructionId)
-            ->setAmount($amount, Currency::Rand)
+            ->setAmount($amount, Currency::Cedi)
             ->setChargeBearer(ChargeBearerType::Debt)
             ->setCreditorAgent($bankCode, $bank, new PostalAddress(countryCode: CountryCode::Ghana))
             ->setCreditor($beneficiaryName, new PostalAddress(
@@ -81,7 +81,8 @@ class DemoSinglePaymentCommand extends Command
             ->setPaymentTypeInfo(InstructionPriority::Norm)
             ->setRequestedExecutionDate(now())
             ->setDebtor($companyName)
-            ->setDebtorAccount($companyAcNo, Currency::Rand)
+            ->setDebtorAccount($companyAcNo, Currency::Cedi)
+            ->setDebtorAgent($bankCode)
             ->setCreditTransferTransactionInfo($transactionInfo);
 
         // 4. Generate and store XML
