@@ -36,7 +36,7 @@ class DemoSinglePaymentCommand extends Command
     {
         $messageId = fake()->uuid();
         $companyName = fake()->company();
-        $companyDescription = fake()->address();
+        $companyAcNo = fake()->randomNumber(8, true);
         $amount = fake()->numberBetween(10_000, 99_999);
 
         $paymentId = fake()->uuid();
@@ -56,7 +56,7 @@ class DemoSinglePaymentCommand extends Command
             ->setCreationDate(now())
             ->setNumberOfTransactions(1)
             ->setControlSum($amount)
-            ->setInitiatingParty($companyName, $companyDescription);
+            ->setInitiatingParty($companyName, $companyAcNo);
 
         // 2. Create transaction info
         $transactionInfo = CreditTransferTransactionInfo::make()
@@ -78,7 +78,7 @@ class DemoSinglePaymentCommand extends Command
         $paymentInfo = PaymentInfo::make()
             ->setPaymentInfoId($paymentInfoId)
             ->setBatchBooking(true)
-            ->setPaymentTypeInfo(InstructionPriority::Norm, 63)
+            ->setPaymentTypeInfo(InstructionPriority::Norm)
             ->setRequestedExecutionDate(now())
             ->setDebtor($companyName)
             ->setDebtorAccount($companyAcNo, Currency::Rand)
