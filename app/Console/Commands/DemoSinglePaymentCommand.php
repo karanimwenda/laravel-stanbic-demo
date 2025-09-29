@@ -11,6 +11,7 @@ use Akika\LaravelStanbic\Enums\ChargeBearerType;
 use Akika\LaravelStanbic\Enums\CountryCode;
 use Akika\LaravelStanbic\Enums\Currency;
 use Akika\LaravelStanbic\Enums\InstructionPriority;
+use Akika\LaravelStanbic\Enums\PaymentMethod;
 use Illuminate\Console\Command;
 
 class DemoSinglePaymentCommand extends Command
@@ -62,7 +63,6 @@ class DemoSinglePaymentCommand extends Command
         $transactionInfo = CreditTransferTransactionInfo::make()
             ->setPaymentId($paymentId, $instructionId)
             ->setAmount($amount, Currency::Cedi)
-            ->setChargeBearer(ChargeBearerType::Debt)
             ->setCreditorAgent($bankCode, $bank, new PostalAddress(countryCode: CountryCode::Ghana))
             ->setCreditor($beneficiaryName, new PostalAddress(
                 fake()->streetName(),
@@ -77,12 +77,14 @@ class DemoSinglePaymentCommand extends Command
         // 3. Create payment info
         $paymentInfo = PaymentInfo::make()
             ->setPaymentInfoId($paymentInfoId)
+            ->setPaymentMethod(PaymentMethod::CreditTransfer)
             ->setBatchBooking(true)
             ->setPaymentTypeInfo(InstructionPriority::Norm)
             ->setRequestedExecutionDate(now())
-            ->setDebtor($companyName)
+            ->setDebtor($companyName, new PostalAddress(countryCode: CountryCode::Ghana))
             ->setDebtorAccount($companyAcNo, Currency::Cedi)
             ->setDebtorAgent($bankCode)
+            ->setChargeBearer(ChargeBearerType::Debt)
             ->setCreditTransferTransactionInfo($transactionInfo);
 
         // 4. Generate and store XML
