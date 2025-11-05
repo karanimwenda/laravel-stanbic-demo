@@ -35,21 +35,20 @@ class DemoSinglePaymentCommand extends Command
      */
     public function handle()
     {
-        $messageId = fake()->regexify("MSG0[A-Z0-9]{5}");
-        $companyName = fake()->company();
-        $companyAcNo = fake()->randomNumber(8, true);
+        $messageId = fake()->regexify('MSG0[A-Z0-9]{5}');
+        $companyName = 'CINCH MARKETS GHANA';
+        $companyAcNo = 9040012825999;
         $amount = fake()->numberBetween(10_000, 99_999);
 
-        $paymentId = fake()->regexify("PMT0[A-Z0-9]{5}");
-        $instructionId = fake()->regexify("INST0[A-Z0-9]{5}");
+        $paymentId = fake()->regexify('PMT0[A-Z0-9]{5}');
+        $instructionId = fake()->regexify('INST0[A-Z0-9]{5}');
         $bankCode = '190101';
         $bank = 'Stanbic Bank Ghana Ltd';
-        $beneficiaryName = fake()->name();
-        $beneficiaryAcNo = fake()->randomNumber(8, true);
+        $beneficiaryName = 'Darion Ferry';
+        $beneficiaryAcNo = 9040006383453;
         $paymentDescription = fake()->words(3, true);
 
-        $paymentInfoId = fake()->regexify("PMTINF0[A-Z0-9]{5}");
-        $companyAcNo = fake()->randomNumber(8, true);
+        $paymentInfoId = fake()->regexify('PMTINF0[A-Z0-9]{5}');
 
         // 1. Create group header
         $groupHeader = GroupHeader::make()
