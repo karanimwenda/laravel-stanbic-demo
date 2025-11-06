@@ -70,12 +70,12 @@ return [
             'password' => env('SFTP_PASSWORD'),
 
             // Settings for SSH key-based authentication with encryption password...
-            // 'privateKey' => env('SFTP_PRIVATE_KEY'),
+            'privateKey' => env('SFTP_PRIVATE_KEY'),
             // 'passphrase' => env('SFTP_PASSPHRASE'),
 
             // Settings for file / directory permissions...
-            'visibility' => 'public', // `private` = 0600, `public` = 0644
-            'directory_visibility' => 'public', // `private` = 0700, `public` = 0755
+            // 'visibility' => 'public', // `private` = 0600, `public` = 0644
+            // 'directory_visibility' => 'public', // `private` = 0700, `public` = 0755
 
             // Optional SFTP Settings...
             // 'hostFingerprint' => env('SFTP_HOST_FINGERPRINT'),
@@ -84,6 +84,7 @@ return [
             // 'root' => env('SFTP_ROOT', ''),
             // 'timeout' => 30,
             // 'useAgent' => true,
+	    'throw' => true,
         ],
 
     ],

@@ -36,8 +36,8 @@ class DemoSinglePaymentCommand extends Command
     public function handle()
     {
         $messageId = fake()->regexify('MSG0[A-Z0-9]{5}');
-        $companyName = 'CINCH MARKETS GHANA';
-        $companyAcNo = 9040012825999;
+        $companyName = 'CINCH.MARKETS/CINCHH2H';
+        $companyAcNo = '9040012825999';
         $amount = fake()->numberBetween(10_000, 99_999);
 
         $paymentId = fake()->regexify('PMT0[A-Z0-9]{5}');
@@ -45,7 +45,7 @@ class DemoSinglePaymentCommand extends Command
         $bankCode = '190101';
         $bank = 'Stanbic Bank Ghana Ltd';
         $beneficiaryName = 'Darion Ferry';
-        $beneficiaryAcNo = 9040006383453;
+        $beneficiaryAcNo = '9040006383453';
         $paymentDescription = fake()->words(3, true);
 
         $paymentInfoId = fake()->regexify('PMTINF0[A-Z0-9]{5}');
@@ -56,7 +56,7 @@ class DemoSinglePaymentCommand extends Command
             ->setCreationDate(now())
             ->setNumberOfTransactions(1)
             ->setControlSum($amount)
-            ->setInitiatingParty($companyName, $companyAcNo);
+            ->setInitiatingParty(null, $companyName);
 
         // 2. Create transaction info
         $transactionInfo = CreditTransferTransactionInfo::make()
