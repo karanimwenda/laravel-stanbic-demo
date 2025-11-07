@@ -38,7 +38,7 @@ class DemoSinglePaymentCommand extends Command
         $messageId = fake()->regexify('MSG0[A-Z0-9]{5}');
         $companyName = 'CINCH.MARKETS/CINCHH2H';
         $companyAcNo = '9040012825999';
-        $amount = fake()->numberBetween(10_000, 99_999);
+        // $amount = fake()->numberBetween(10_000, 99_999);
 
         // $paymentId = fake()->regexify('PMT0[A-Z0-9]{5}');
         // $instructionId = fake()->regexify('INST0[A-Z0-9]{5}');
@@ -54,8 +54,6 @@ class DemoSinglePaymentCommand extends Command
         $groupHeader = GroupHeader::make()
             ->setMessageId($messageId)
             ->setCreationDate(now())
-            ->setNumberOfTransactions(1)
-            ->setControlSum($amount)
             ->setInitiatingParty(null, $companyName);
 
         // 4. Generate and store XML
