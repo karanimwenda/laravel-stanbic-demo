@@ -77,8 +77,10 @@ class DemoSinglePaymentCommand extends Command
         $instructionId = fake()->regexify('INST0[A-Z0-9]{5}');
         $bankCode = '190101';
         $bank = 'Stanbic Bank Ghana Ltd';
-        $beneficiaryName = fake()->name();
-        $beneficiaryAcNo = fake()->numerify('9############');
+        $beneficiaryName = 'Darion Ferry';
+        $beneficiaryAcNo = '9040006383453';
+        // $beneficiaryName = fake()->name();
+        // $beneficiaryAcNo = fake()->numerify('9############');
         $paymentDescription = fake()->words(3, true);
 
         $paymentInfoId = fake()->regexify('PMTINF0[A-Z0-9]{5}');
