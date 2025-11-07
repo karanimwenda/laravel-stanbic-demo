@@ -40,15 +40,15 @@ class DemoSinglePaymentCommand extends Command
         $companyAcNo = '9040012825999';
         $amount = fake()->numberBetween(10_000, 99_999);
 
-        $paymentId = fake()->regexify('PMT0[A-Z0-9]{5}');
-        $instructionId = fake()->regexify('INST0[A-Z0-9]{5}');
-        $bankCode = '190101';
-        $bank = 'Stanbic Bank Ghana Ltd';
-        $beneficiaryName = 'Darion Ferry';
-        $beneficiaryAcNo = '9040006383453';
-        $paymentDescription = fake()->words(3, true);
-
-        $paymentInfoId = fake()->regexify('PMTINF0[A-Z0-9]{5}');
+        // $paymentId = fake()->regexify('PMT0[A-Z0-9]{5}');
+        // $instructionId = fake()->regexify('INST0[A-Z0-9]{5}');
+        // $bankCode = '190101';
+        // $bank = 'Stanbic Bank Ghana Ltd';
+        // $beneficiaryName = 'Darion Ferry';
+        // $beneficiaryAcNo = '9040006383453';
+        // $paymentDescription = fake()->words(3, true);
+        //
+        // $paymentInfoId = fake()->regexify('PMTINF0[A-Z0-9]{5}');
 
         // 1. Create group header
         $groupHeader = GroupHeader::make()
@@ -57,6 +57,33 @@ class DemoSinglePaymentCommand extends Command
             ->setNumberOfTransactions(1)
             ->setControlSum($amount)
             ->setInitiatingParty(null, $companyName);
+
+        // 4. Generate and store XML
+        $filePath = Pain00100103::make()
+            ->setGroupHeader($groupHeader)
+            ->addPaymentInfo($this->getPaymentInfo($companyName, $companyAcNo))
+            ->addPaymentInfo($this->getPaymentInfo($companyName, $companyAcNo))
+            ->addPaymentInfo($this->getPaymentInfo($companyName, $companyAcNo))
+            ->addPaymentInfo($this->getPaymentInfo($companyName, $companyAcNo))
+            ->addPaymentInfo($this->getPaymentInfo($companyName, $companyAcNo))
+            ->store(); // Returns the stored file path
+
+        $this->line("Saved to: \n\t{$filePath}");
+    }
+
+    public function getPaymentInfo(string $companyName, string $companyAcNo): PaymentInfo
+    {
+        $amount = fake()->numberBetween(10_000, 99_999);
+
+        $paymentId = fake()->regexify('PMT0[A-Z0-9]{5}');
+        $instructionId = fake()->regexify('INST0[A-Z0-9]{5}');
+        $bankCode = '190101';
+        $bank = 'Stanbic Bank Ghana Ltd';
+        $beneficiaryName = fake()->name();
+        $beneficiaryAcNo = fake()->numerify('9############');
+        $paymentDescription = fake()->words(3, true);
+
+        $paymentInfoId = fake()->regexify('PMTINF0[A-Z0-9]{5}');
 
         // 2. Create transaction info
         $transactionInfo = CreditTransferTransactionInfo::make()
@@ -86,12 +113,6 @@ class DemoSinglePaymentCommand extends Command
             ->setChargeBearer(ChargeBearerType::Debt)
             ->setCreditTransferTransactionInfo($transactionInfo);
 
-        // 4. Generate and store XML
-        $filePath = Pain00100103::make()
-            ->setGroupHeader($groupHeader)
-            ->setPaymentInfo($paymentInfo)
-            ->store(); // Returns the stored file path
-
-        $this->line("Saved to: \n\t{$filePath}");
+        return $paymentInfo;
     }
 }
