@@ -14,11 +14,11 @@ use Akika\LaravelStanbic\Enums\InstructionPriority;
 use Akika\LaravelStanbic\Enums\PaymentMethod;
 use Illuminate\Console\Command;
 
-class DemoSinglePaymentCommand extends Command
+class DemoMultiplePaymentCreditsCommand extends Command
 {
-    protected $signature = 'demo:single-payment';
+    protected $signature = 'demo:multiple-payment-credits';
 
-    protected $description = 'Create a demo single payment';
+    protected $description = 'Create multiple demo payments (CdtTrfTxInf)';
 
     public function handle()
     {
@@ -54,8 +54,11 @@ class DemoSinglePaymentCommand extends Command
             ->setDebtor($companyName, new PostalAddress(countryCode: CountryCode::Ghana))
             ->setDebtorAccount($companyAcNo, Currency::Cedi)
             ->setDebtorAgent($debtorBankCode)
-            ->setChargeBearer(ChargeBearerType::Debt)
-            ->addCreditTransferTransactionInfo($this->getCreditTransferTransactionInfo());
+            ->setChargeBearer(ChargeBearerType::Debt);
+
+        for ($i = 0; $i < 30; $i++) {
+            $paymentInfo->addCreditTransferTransactionInfo($this->getCreditTransferTransactionInfo());
+        }
 
         return $paymentInfo;
     }

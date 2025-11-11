@@ -14,11 +14,11 @@ use Akika\LaravelStanbic\Enums\InstructionPriority;
 use Akika\LaravelStanbic\Enums\PaymentMethod;
 use Illuminate\Console\Command;
 
-class DemoSinglePaymentCommand extends Command
+class DemoMultiplePaymentInfosCommand extends Command
 {
-    protected $signature = 'demo:single-payment';
+    protected $signature = 'demo:multiple-payment-infos';
 
-    protected $description = 'Create a demo single payment';
+    protected $description = 'Credit multiple demo payments (PmtInf)';
 
     public function handle()
     {
@@ -32,10 +32,12 @@ class DemoSinglePaymentCommand extends Command
             ->setCreationDate(now())
             ->setInitiatingParty(null, $companyName);
 
-        $filePath = Pain00100103::make()
-            ->setGroupHeader($groupHeader)
-            ->addPaymentInfo($this->getPaymentInfo($companyName, $companyAcNo))
-            ->store();
+        // 2. Generate and store XML
+        $pain00100103 = Pain00100103::make()->setGroupHeader($groupHeader);
+        for ($i = 0; $i < 40; $i++) {
+            $pain00100103->addPaymentInfo($this->getPaymentInfo($companyName, $companyAcNo));
+        }
+        $filePath = $pain00100103->store(); // Returns the stored file path
 
         $this->line("Saved to: \n\t{$filePath}");
     }
