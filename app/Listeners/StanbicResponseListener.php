@@ -21,7 +21,7 @@ class StanbicResponseListener
     {
         $header = $event->report->groupHeader;
         $groupInfo = $event->report->originalGroupInfoAndStatus;
-        $paymentInfo = $event->report->originalPaymentInfoAndStatus;
+        $paymentInfo = $event->report->originalPaymentInfoAndStatuses?->toJson() ?? null;
         $reasons = $event->report->getAllStatusReasons()->all();
 
         info(__METHOD__, compact('header', 'groupInfo', 'paymentInfo', 'reasons'));
