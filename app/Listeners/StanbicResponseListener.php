@@ -3,8 +3,9 @@
 namespace App\Listeners;
 
 use Akika\LaravelStanbic\Events\Pain00200103ReportReceived;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
-class StanbicResponseListener
+class StanbicResponseListener implements ShouldQueue
 {
     /**
      * Create the event listener.
@@ -24,6 +25,8 @@ class StanbicResponseListener
         $paymentInfo = $event->report->originalPaymentInfoAndStatuses?->toJson() ?? null;
         $reasons = $event->report->getAllStatusReasons()->all();
 
-        info(__METHOD__, compact('header', 'groupInfo', 'paymentInfo', 'reasons'));
+        $reason = $event->report->originalGroupInfoAndStatus->statusReasonInfos->additionalInfos->first();
+
+        info(__METHOD__, compact('header', 'groupInfo', 'paymentInfo', 'reason'));
     }
 }
